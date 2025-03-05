@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Task extends StatefulWidget {
-  const Task({super.key});
+  const Task(this.titulo, {super.key, this.descricao = ''});
+
+  final String titulo;
+  final String descricao;
 
   @override
   State<Task> createState() => _TaskState();
@@ -9,7 +12,6 @@ class Task extends StatefulWidget {
 
 class _TaskState extends State<Task> {
   bool isChecked = false;
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -19,9 +21,7 @@ class _TaskState extends State<Task> {
           value: isChecked,
           onChanged: (bool? value) {
             setState(() {
-              if (isChecked != null) {
                 isChecked = value ?? false;
-              }
             });
           },
           activeColor: Colors.green,
@@ -41,7 +41,7 @@ class _TaskState extends State<Task> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Primeira Tarefa',
+                  widget.titulo,
                   style: TextStyle(
                     decoration: (isChecked) ? TextDecoration.lineThrough : TextDecoration.none,
                     decorationColor: Color.fromRGBO(255, 255, 255, 0.25),
@@ -52,7 +52,7 @@ class _TaskState extends State<Task> {
                   ),
                 ),
                 Text(
-                  'Descrição da primeira tarefagggggggggggggggggggggggggggggggggggggggggggggggggg',
+                  widget.descricao,
                   style: TextStyle(
                     decoration: (isChecked) ? TextDecoration.lineThrough : TextDecoration.none,
                     decorationColor: Color.fromRGBO(255, 255, 255, 0.25),
