@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:to_do/data/task_dao.dart';
 
 class Task extends StatefulWidget {
   const Task(this.titulo, {super.key, this.descricao = ''});
@@ -12,6 +13,7 @@ class Task extends StatefulWidget {
 
 class _TaskState extends State<Task> {
   bool isChecked = false;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -21,7 +23,7 @@ class _TaskState extends State<Task> {
           value: isChecked,
           onChanged: (bool? value) {
             setState(() {
-                isChecked = value ?? false;
+              isChecked = value ?? false;
             });
           },
           activeColor: Colors.green,
@@ -33,7 +35,7 @@ class _TaskState extends State<Task> {
           ),
         ),
         SizedBox(
-          width: 275,
+          width: 250,
           height: 50,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -45,12 +47,18 @@ class _TaskState extends State<Task> {
                   child: Text(
                     widget.titulo,
                     style: TextStyle(
-                      decoration: (isChecked) ? TextDecoration.lineThrough : TextDecoration.none,
+                      decoration:
+                          (isChecked)
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none,
                       decorationColor: Color.fromRGBO(255, 255, 255, 0.25),
                       decorationThickness: 2.7,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: (isChecked) ? Color.fromRGBO(255, 255, 255, 0.25) : Colors.white,
+                      color:
+                          (isChecked)
+                              ? Color.fromRGBO(255, 255, 255, 0.25)
+                              : Colors.white,
                     ),
                   ),
                 ),
@@ -59,19 +67,24 @@ class _TaskState extends State<Task> {
                 Text(
                   widget.descricao,
                   style: TextStyle(
-                    decoration: (isChecked) ? TextDecoration.lineThrough : TextDecoration.none,
+                    decoration:
+                        (isChecked)
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none,
                     decorationColor: Color.fromRGBO(255, 255, 255, 0.25),
                     decorationThickness: 2.5,
                     fontSize: 11,
                     fontWeight: FontWeight.w400,
-                    color: (isChecked) ? Color.fromRGBO(255, 255, 255, 0.25) : Colors.white,
+                    color:
+                        (isChecked)
+                            ? Color.fromRGBO(255, 255, 255, 0.25)
+                            : Colors.white,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
             ],
           ),
         ),
-        Icon(Icons.delete_outline, color: Color.fromRGBO(255, 255, 255, 0.25),)
       ],
     );
   }

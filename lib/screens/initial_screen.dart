@@ -72,7 +72,22 @@ class _InitialScreenState extends State<InitialScreen> {
                             itemCount: items.length,
                             itemBuilder:  (BuildContext context, int index){
                               final Task tarefa = items[index];
-                              return tarefa;
+                              return Row(
+                                children: [
+                                  tarefa,
+                                  IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        TaskDao().delete(tarefa.titulo);
+                                      });
+                                    },
+                                    icon: Icon(
+                                      Icons.delete_outline,
+                                      color: Color.fromRGBO(255, 255, 255, 0.25),
+                                    ),
+                                  ),
+                                ],
+                              );
                             },
                           );
                         }
