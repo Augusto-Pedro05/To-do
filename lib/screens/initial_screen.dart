@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:to_do/data/task_inherited.dart';
 import 'package:to_do/screens/add_task.dart';
 
+import '../components/task.dart';
+import '../data/task_dao.dart';
+
 class InitialScreen extends StatefulWidget {
   const InitialScreen({super.key});
 
@@ -38,20 +41,56 @@ class _InitialScreenState extends State<InitialScreen> {
             child: Scrollbar(
               thickness: 7,
               radius: Radius.circular(10),
-              child: ListView.builder(
-                itemCount: TaskInherited.of(context).tasks.length,
-                itemBuilder: (context, index) {
-                  return TaskInherited.of(context).tasks[index];
+              child: FutureBuilder<List<Task>>(
+                future: TaskDao().findAll(),
+                builder: (context, snapshot){
+                  List<Task>? items = snapshot.data;
+                  switch (snapshot.connectionState){
+
+                    case ConnectionState.none:
+                      return Center(
+                        child: Column(
+                          children: [CircularProgressIndicator(), Text('Carregando')],
+                        ),
+                      );
+                    case ConnectionState.waiting:
+                      return Center(
+                        child: Column(
+                          children: [CircularProgressIndicator(), Text('Carregando')],
+                        ),
+                      );
+                    case ConnectionState.active:
+                      return Center(
+                        child: Column(
+                          children: [CircularProgressIndicator(), Text('Carregando')],
+                        ),
+                      );
+                    case ConnectionState.done:
+                      if(snapshot.hasData && items != null){
+                        if(items.isNotEmpty){
+                          return ListView.builder(
+                            itemCount: items.length,
+                            itemBuilder:  (BuildContext context, int index){
+                              final Task tarefa = items[index];
+                              return tarefa;
+                            },
+                          );
+                        }
+                        return Center(
+                          child: Text("Nenhuma tarefa encontrada"),
+                        );
+                      }
+                      return Center(child: Text("Erro ao carregar tarefas"));
+                  }
                 },
-                padding: EdgeInsets.only(top: 8, bottom: 90),
               ),
             ),
           ),
         ],
       ),
       floatingActionButton: SizedBox(
-        width: 100,
-        height: 50,
+        width: 110,
+        height: 40,
         child: FloatingActionButton(
           onPressed: () async{
             await Navigator.push(
@@ -62,15 +101,16 @@ class _InitialScreenState extends State<InitialScreen> {
             );
             setState(() {});
           },
-          backgroundColor: Color.fromRGBO(76, 175, 80, 0.50),
+          backgroundColor: Colors.green,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.add, color: Colors.white, size: 20),
               Text(
-                'Add Task',
+                ' Add Task',
                 style: TextStyle(fontSize: 15, color: Colors.white),
               ),
             ],

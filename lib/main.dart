@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
             backgroundColor: Color.fromRGBO(28, 27, 27, 1),
           ),
         ),
-        home: const InitialScreen(),
+        home: TaskInherited(child: const InitialScreen()),
       ),
     );
   }

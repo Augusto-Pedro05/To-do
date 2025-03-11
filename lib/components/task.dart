@@ -32,25 +32,30 @@ class _TaskState extends State<Task> {
             borderRadius: BorderRadius.circular(50),
           ),
         ),
-        Container(
-          child: SizedBox(
-            width: 300,
-            height: 50,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.titulo,
-                  style: TextStyle(
-                    decoration: (isChecked) ? TextDecoration.lineThrough : TextDecoration.none,
-                    decorationColor: Color.fromRGBO(255, 255, 255, 0.25),
-                    decorationThickness: 2.7,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: (isChecked) ? Color.fromRGBO(255, 255, 255, 0.25) : Colors.white,
+        SizedBox(
+          width: 275,
+          height: 50,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    widget.titulo,
+                    style: TextStyle(
+                      decoration: (isChecked) ? TextDecoration.lineThrough : TextDecoration.none,
+                      decorationColor: Color.fromRGBO(255, 255, 255, 0.25),
+                      decorationThickness: 2.7,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: (isChecked) ? Color.fromRGBO(255, 255, 255, 0.25) : Colors.white,
+                    ),
                   ),
                 ),
+              ),
+              if (widget.descricao.isNotEmpty)
                 Text(
                   widget.descricao,
                   style: TextStyle(
@@ -63,10 +68,10 @@ class _TaskState extends State<Task> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-              ],
-            ),
+            ],
           ),
         ),
+        Icon(Icons.delete_outline, color: Color.fromRGBO(255, 255, 255, 0.25),)
       ],
     );
   }

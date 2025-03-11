@@ -35,7 +35,7 @@ class _TaskInheritedState extends State<TaskInherited> {
 class _TaskInheritedWidget extends InheritedWidget {
   final _TaskInheritedState data;
 
-  _TaskInheritedWidget({required this.data, required Widget child})
+  const _TaskInheritedWidget({required this.data, required Widget child})
       : super(child: child);
 
   @override

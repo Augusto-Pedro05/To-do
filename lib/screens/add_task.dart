@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:to_do/components/task.dart';
+import 'package:to_do/data/task_dao.dart';
 import '../data/task_inherited.dart';
 
 class AddTaskPage extends StatefulWidget {
-
   const AddTaskPage({super.key, required this.taskContext});
+
   final BuildContext taskContext;
 
   @override
@@ -12,27 +13,27 @@ class AddTaskPage extends StatefulWidget {
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
-
-  TextEditingController _tituloController = TextEditingController();
-  TextEditingController _descricaoController = TextEditingController();
+  final TextEditingController _tituloController = TextEditingController();
+  final TextEditingController _descricaoController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
-  bool valueValidator(String? value){
+  bool valueValidator(String? value) {
     if (value != null && value.isEmpty) {
       return true;
     }
     return false;
   }
+
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Nova Tarefa"),
+          title: Text("New Task"),
           titleTextStyle: TextStyle(
-            color: Color.fromRGBO(221, 221, 221, 1),
+            color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.bold,
             fontFamily: 'Satoshi',
@@ -48,10 +49,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Título",
+                  "Title",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
+                    fontFamily: 'Satoshi',
                     color: Colors.white,
                   ),
                 ),
@@ -59,15 +61,16 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 TextFormField(
                   validator: (String? value) {
                     if (valueValidator(value)) {
-                      return 'Insira o nome da tarefa';
+                      return 'Enter a valid title';
                     }
                     return null;
                   },
                   controller: _tituloController,
+                  cursorColor: Colors.green,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: "Digite o título",
+                    hintText: "Enter the title",
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.green, width: 2.0),
                     ),
@@ -75,21 +78,23 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 ),
                 SizedBox(height: 16),
                 Text(
-                  "Descrição",
+                  "Description",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
+                    fontFamily: 'Satoshi',
                     color: Colors.white,
                   ),
                 ),
                 SizedBox(height: 8),
                 TextFormField(
+                  cursorColor: Colors.green,
                   controller: _descricaoController,
                   maxLines: 16,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: "Digite a descrição",
+                    hintText: "Enter the description",
 
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.green, width: 2.0),
@@ -105,18 +110,17 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        print(_tituloController.text);
-                        print(_descricaoController.text);
-                        TaskInherited.of(widget.taskContext).addTask(
-                            Task(_tituloController.text, descricao: _descricaoController.text,)
+                        await TaskDao().save(
+                          Task(
+                            _tituloController.text,
+                            descricao: _descricaoController.text,
+                          )
                         );
                         ScaffoldMessenger.of(
                           context,
-                        ).showSnackBar(SnackBar(
-                          content: Text("Tarefa salva"),
-                        ));
+                        ).showSnackBar(SnackBar(content: Text("Tarefa salva")));
                         Navigator.pop(context);
                       }
                     },
